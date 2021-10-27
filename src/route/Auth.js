@@ -2,6 +2,9 @@ import { useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { auth } from "fbase";
 const Auth = () => {
@@ -9,7 +12,22 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [newAccount, setNewAccount] = useState(true);
   const [error, setError] = useState("");
+
   const toggleAccount = () => setNewAccount((prev) => !prev);
+  const onSocialClick = async (event) => {
+    console.log(event.target.name);
+    const {
+      target: { name },
+    } = event;
+    let provider;
+    if (name === "Google") {
+      provider = new GoogleAuthProvider();
+    } else if (name === "Github") {
+      provider = new GithubAuthProvider();
+    }
+    const data = await signInWithPopup(auth, provider);
+    console.log(data);
+  };
 
   const onChange = (event) => {
     const {
@@ -63,8 +81,12 @@ const Auth = () => {
         {newAccount ? "Sign In" : "Create Account"}
       </span>
       <div>
-        <button>continue with google</button>
-        <button>continue with GitHub</button>
+        <button onClick={onSocialClick} name="Google">
+          continue with google
+        </button>
+        <button onClick={onSocialClick} name="Github">
+          continue with GitHub
+        </button>
       </div>
     </div>
   );
