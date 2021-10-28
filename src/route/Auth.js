@@ -15,7 +15,6 @@ const Auth = () => {
 
   const toggleAccount = () => setNewAccount((prev) => !prev);
   const onSocialClick = async (event) => {
-    console.log(event.target.name);
     const {
       target: { name },
     } = event;
@@ -26,7 +25,6 @@ const Auth = () => {
       provider = new GithubAuthProvider();
     }
     const data = await signInWithPopup(auth, provider);
-    console.log(data);
   };
 
   const onChange = (event) => {
@@ -49,7 +47,6 @@ const Auth = () => {
       } else {
         data = await signInWithEmailAndPassword(auth, email, password);
       }
-      console.log(data);
     } catch (error) {
       setError(error.message);
     }
