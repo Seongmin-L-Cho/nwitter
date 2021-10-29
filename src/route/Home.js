@@ -1,21 +1,20 @@
 import { useState, useEffect } from "react";
 import { getDB } from "fbase";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, onSnapshot } from "firebase/firestore";
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
 
   console.log("userObj", userObj);
-  const getNweets = async () => {
-    const dbNweets = await getDocs(collection(getDB, "nweets"));
-    dbNweets.forEach((document) => {
-      const nweetObject = { ...document.data(), id: document.id };
-      setNweets((prev) => [nweetObject, ...prev]);
-    });
-  };
 
   useEffect(() => {
-    getNweets();
+    onSnapshot(collection(getDB, "nweets"), (snapshot) => {
+      const newArray = snapshot.docs.map((document) => ({
+        id: document.id,
+        ...document.data(),
+      }));
+      setNweets(newArray);
+    });
   }, []);
 
   console.log(nweets);
