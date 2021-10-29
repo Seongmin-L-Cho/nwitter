@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { getDB } from "fbase";
 import { collection, addDoc, onSnapshot } from "firebase/firestore";
+import Nweet from "component/Nweet";
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
-
-  console.log("userObj", userObj);
 
   useEffect(() => {
     onSnapshot(collection(getDB, "nweets"), (snapshot) => {
@@ -51,9 +50,11 @@ const Home = ({ userObj }) => {
       </form>
       <div>
         {nweets.map((nweet) => (
-          <div key={nweet.id}>
-            <h4>{nweet.text}</h4>
-          </div>
+          <Nweet
+            nweetObj={nweet}
+            key={nweet.id}
+            isOwner={nweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </>
