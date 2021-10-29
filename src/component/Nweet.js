@@ -33,7 +33,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
         <>
           <form>
             <input value={newNweet} required onChange={onChange} />
-            <input onClick={onSubmit} value="Upadate Value" />
+            <input onClick={onSubmit} type="submit" value="Upadate Value" />
           </form>
           <button onClick={toggleEditing}>Cancel</button>
         </>
